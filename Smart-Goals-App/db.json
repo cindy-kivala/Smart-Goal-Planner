@@ -68,7 +68,7 @@
       "name": "New Phone",
       "targetAmount": 1200,
       "savedAmount": 0,
-      "category": "Electronics",
+      "category": "Misc.",
       "deadline": "2025-01-31",
       "createdAt": "2024-07-10"
     },
@@ -97,6 +97,14 @@
       "savedAmount": 1200,
       "targetAmount": 2800,
       "deadline": "2025-07-28"
+    },
+    {
+      "id": 1752955850076,
+      "name": "Gym Membership",
+      "category": "Health",
+      "savedAmount": 400,
+      "targetAmount": 850,
+      "deadline": "2025-07-24"
     }
   ]
 }

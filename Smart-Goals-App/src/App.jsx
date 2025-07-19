@@ -23,6 +23,8 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [editGoalId, setEditGoalId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
     fetch('http://localhost:3000/goals')
@@ -46,20 +48,45 @@ function App() {
 
     if (isEditing) {
     // Edit mode: update existing goal
-      const updatedGoals = goals.map((goal) =>
-         goal.id === editGoalId ? { ...newGoal, id: editGoalId } : goal
+    fetch(`http://localhost:3000/goals/${editGoalId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+     },
+    body: JSON.stringify(formattedGoal),
+  })
+  .then((res) => res.json())
+  .then((updatedGoal) => {
+    const updatedGoals = goals.map((goal) =>
+      goal.id === editGoalId ? updatedGoal : goal
     );
-        setGoals(updatedGoals);
+    setGoals(updatedGoals);
+    setIsEditing(false);
+    setEditGoalId(null);
+  })
+  .catch((error) => console.error('Error editing goal:', error));
+
         setIsEditing(false);
         setEditGoalId(null);
   } else {
        const newGoalWithId = {
-      ...newGoal,
-      savedAmount: parseFloat(newGoal.savedAmount),
-      targetAmount: parseFloat(newGoal.targetAmount),
-      id: Date.now(),
+      ...formattedGoal
     };
-    setGoals([...goals, newGoalWithId]);
+    
+    //Sdd posts
+  fetch('http://localhost:3000/goals', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify(newGoalWithId),
+})
+     .then((res) => res.json())
+     .then((createdGoal) => {
+      setGoals([...goals, createdGoal])
+    })
+     .catch((error) => console.error('Error adding goal:', error));
+
   }
 
   //clear our form after add/edit
@@ -76,8 +103,21 @@ function App() {
 
 
   //delete function
-  const handleDeleteGoal = id => {
-    setGoals(goals.filter(goal => goal.id !== id))
+  const handleDeleteGoal = (id) => {
+    fetch(`http://localhost:3000/goals/${id}`, {
+      method: 'DELETE',
+   })
+     .then((res) => {
+      if (!res.ok) {
+        throw new Error('Failed to delete goal');
+      }
+      // Update state only if deletion is successful
+      const updatedGoals = goals.filter(goal => goal.id !== id);
+      setGoals(updatedGoals);
+    })
+    .catch((error) => {
+      console.error('Error deleting goal:', error);
+    });
   }
   
   //Edit function
@@ -96,8 +136,9 @@ function App() {
   }
 
   const filteredGoals = goals.filter(goal =>
-    selectedCategory === 'All' ? true : goal.category === selectedCategory
-  )
+    (selectedCategory === 'All' ||  goal.category === selectedCategory) &&
+    goal.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
 
   //Display dATA-RENDER
@@ -109,6 +150,16 @@ function App() {
      </button>
 
       <h1>Smart Goals Planner 🚀</h1>
+
+     {/*SEARCH BAR*/}
+      <input
+        type="text"
+        placeholder="Search goals..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-bar"
+      />
+
       <NewGoalForm 
          newGoal={newGoal} 
          setNewGoal={setNewGoal} 
