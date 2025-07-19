@@ -40,9 +40,63 @@
 .read-the-docs {
   color: #eedfdf;
 }
+/* Base styles */
 .App {
-  font-family: 'Arial', sans-serif;
-  text-align: center;
-  color: #fdf7f7;
-  /* background-color: #cca2c5; *REFERENCE APP COLOR/
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 950px;
+  border-radius: 70px;
+  border: none;
+}
+
+.theme-toggle {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+/* Light mode */
+.light-mode {
+  background-color: #f0f0f0;
+  color: #bb4b4b;
+}
+
+/* Dark mode */
+.dark-mode {
+  background-color: #1a1919;
+  color: #ecb7b7;
+}
+
+.dark-mode .theme-toggle {
+  background-color: #db8383;
+  color: rgb(228, 219, 219);
+  border: none;
+  border-radius: 15px;
+}
+.light-mode .theme-toggle {
+  background-color: #db8383;
+  color: rgb(228, 219, 219);
+  border: none;
+  border-radius: 15px;
+}
+button {
+  cursor: pointer;
+}
+#AddBtn {
+  background-color: #db8383;
+  border-radius: 15px;
+  margin: 0 1em;
+}
+#DeleteBtn {
+  background-color: #db8383;
+  border-radius: 15px;
+  margin: 0 2em;
+}
+#EditBtn {
+  background-color: #db8383;
+  border-radius: 15px;
+
 }
