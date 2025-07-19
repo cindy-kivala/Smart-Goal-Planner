@@ -3,6 +3,7 @@ import './App.css'
 
 function App() {
   const [goals, setGoals] = useState([])
+  
   const [newGoal, setNewGoal] = useState({
     name: '',
     category: '',
@@ -56,11 +57,30 @@ function App() {
       .catch(err => console.error('Ooops! Error adding your goal:', err))
     
   }
+  //Handle typing: chnaged to specifically handle in form chnages
+  function handleNewGoalChange(field, value) {
+    console.log(`${field} typing:`, value) //log typing input
+    setNewGoal({ ...newGoal, [field]: value })
+  }
+
+  //delete function
+  function handleDeleteGoal(id) {
+    fetch(`http://localhost:3000/goals/${id}`, {
+      method: 'DELETE'
+    })
+      .then(() => { 
+        console.log(`Goal deleted successfully!:`, id)
+        setGoals(goals.filter(goal => goal.id !== id)) //filter out deleted goal
+      })
+      .catch(err => console.error('Error deleting goal:', err))
+  }
+
 
   //Display dATA-RENDER
   return (
     <div className="App">
       <h1>Smart Goals Planner</h1>
+  
       <ul>
         {goals.map(goal => (
           <li key={goal.id}>
@@ -68,6 +88,9 @@ function App() {
             <p>Category: {goal.category}</p>
             <p>Saved: ${goal.savedAmount} / ${goal.targetAmount} </p>
             <p>Deadline: {goal.deadline}</p>
+            <button onClick={() => handleDeleteGoal(goal.id)}>
+              Delete Goal
+            </button>
           </li>
         ))}
       </ul>
@@ -78,30 +101,37 @@ function App() {
           type="text"
           placeholder="Name"
           value={newGoal.name}
-          onChange={(event) => setNewGoal({...newGoal, name: event.target.value})}
+          onChange={(event) => handleNewGoalChange('name', event.target.value)}
         />
-           <input
-          type="text"
-          placeholder="Category"
-          value={newGoal.category}
-          onChange={(event) => setNewGoal({...newGoal, category: event.target.value})}
-        />
+           <select
+             value={newGoal.category}
+             onChange={(event) => handleNewGoalChange('category', event.target.value)}
+           >
+             <option value="">-- Choose Category --</option>
+             <option value="Health">Health</option>
+             <option value="Finance">Finance</option>
+             <option value="Career">Career</option>
+             <option value="Education">Education</option>
+             <option value="Electronics">Electronics</option>
+             <option value="Personal">Personal</option>  
+           </select>
+
            <input
           type="number"
           placeholder="Saved Amount"
           value={newGoal.savedAmount}
-          onChange={(event) => setNewGoal({...newGoal, savedAmount: event.target.value})}
+          onChange={(event) => handleNewGoalChange('savedAmount', event.target.value)}
         />
            <input
           type="number"
           placeholder="Target Amount"
           value={newGoal.targetAmount}
-          onChange={(event) => setNewGoal({...newGoal, targetAmount: event.target.value})}
+          onChange={(event) => handleNewGoalChange('targetAmount', event.target.value)}
         />
            <input
           type="date"
           value={newGoal.deadline}
-          onChange={(event) => setNewGoal({...newGoal, deadline: event.target.value})}
+          onChange={(event) => handleNewGoalChange('deadline', event.target.value)}
         />
         <button type="submit">
           Add Your Goal
