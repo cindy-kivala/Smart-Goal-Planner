@@ -12,6 +12,10 @@ function App() {
     deadline: ''
   })
 
+  //Editing feature
+  const [editingId, setEditingId] = useState(null)
+  const [editingGoal, setEditingGoal] = useState({})
+
   useEffect(() => {
     fetch('http://localhost:3000/goals')
       .then(response => response.json())
@@ -74,6 +78,42 @@ function App() {
       })
       .catch(err => console.error('Error deleting goal:', err))
   }
+  
+  //Edit function
+   function handleEditChange(field, value) {
+     console.log(`Editing ${field}:`, value) //log editing input
+    setEditingGoal({ ...editingGoal, [field]: value })
+  }
+
+  function handleEditClick(goal) {
+    console.log('Editing goal:', goal)
+    // Set the editing state with the goal to be edited- populate form
+    setEditingId(goal.id)
+    setEditingGoal({ ...goal })
+ }
+
+  // Handle edit form submission
+  function handleEditSubmit(event) {
+    event.preventDefault()
+    console.log('Submitting edited goal:', editingGoal)
+
+    fetch(`http://localhost:3000/goals/${editingId}`, {
+      method: 'PATCH', // Use PATCH to update existing goal
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editingGoal)
+    })
+      .then(res => res.json())
+      .then(updated => {
+        console.log('Edited goal response:', updated)
+        
+        const updatedGoals = goals.map(goal => 
+          goal.id === updated.id ? updated : goal
+        )
+        setGoals(updatedGoals) // Update the goals state with the edited goal
+        setEditingId(null) // Reset editing state
+      })
+      .catch(err => console.error('Error editing goal:', err))
+  }
 
 
   //Display dATA-RENDER
@@ -88,9 +128,49 @@ function App() {
             <p>Category: {goal.category}</p>
             <p>Saved: ${goal.savedAmount} / ${goal.targetAmount} </p>
             <p>Deadline: {goal.deadline}</p>
+
             <button onClick={() => handleDeleteGoal(goal.id)}>
               Delete Goal
             </button>
+            <button onClick={() => handleEditClick(goal)}>Edit Post</button>
+
+            {editingId === goal.id && (
+              <form onSubmit={handleEditSubmit}>
+                <input
+                  type="text"
+                  value={editingGoal.name}
+                  onChange={(e) => handleEditChange('name', e.target.value)}
+                />
+                <select
+                  value={editingGoal.category}
+                  onChange={(e) => handleEditChange('category', e.target.value)}
+                >
+                  <option value="">-- Choose Category --</option>
+                  <option value="Health">Health</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Career">Career</option>
+                  <option value="Education">Education</option>
+                  <option value="Personal">Personal</option>
+                </select>
+                <input
+                  type="number"
+                  value={editingGoal.savedAmount}
+                  onChange={(e) => handleEditChange('savedAmount', e.target.value)}
+                />
+                <input
+                  type="number"
+                  value={editingGoal.targetAmount}
+                  onChange={(e) => handleEditChange('targetAmount', e.target.value)}
+                />
+                 <input
+                  type="date"
+                  value={editingGoal.deadline}
+                  onChange={(e) => handleEditChange('deadline', e.target.value)}
+                />
+
+                <button type="submit">Save Changes</button>
+              </form>
+            )}
           </li>
         ))}
       </ul>

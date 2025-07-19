@@ -89,6 +89,14 @@
       "category": "Finance",
       "deadline": "2025-03-31",
       "createdAt": "2024-05-15"
+    },
+    {
+      "id": "f4b1",
+      "name": "Restock Skincare",
+      "category": "Personal",
+      "savedAmount": 1200,
+      "targetAmount": 2800,
+      "deadline": "2025-07-28"
     }
   ]
 }
