@@ -38,5 +38,11 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: #eedfdf;
+}
+.App {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  color: #fdf7f7;
+  /* background-color: #cca2c5; *REFERENCE APP COLOR/
 }
