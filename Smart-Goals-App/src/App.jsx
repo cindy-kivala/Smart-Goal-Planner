@@ -3,6 +3,13 @@ import './App.css'
 
 function App() {
   const [goals, setGoals] = useState([])
+  const [newGoal, setNewGoal] = useState({
+    name: '',
+    category: '',
+    savedAmount: '',
+    targetAmount: '',
+    deadline: ''
+  })
 
   useEffect(() => {
     fetch('http://localhost:3000/goals')
@@ -14,7 +21,43 @@ function App() {
       .catch(error => console.error('Error fetching goals:', error)) // Fetch goals from the JSON server
   }, [])
   
-  //Display dATA
+  //Handle form submission
+  function handleAddGoal(event) {
+    event.preventDefault()
+
+    const goalToAdd = {
+      ...newGoal,//spread operator
+      savedAmount: parseFloat(newGoal.savedAmount),
+      targetAmount: parseFloat(newGoal.targetAmount)
+    }
+
+    console.log('Adding your new goal:', goalToAdd)
+
+    //FETCH FUNCTION
+    fetch('http://localhost:3000/goals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(goalToAdd)//distinguish
+    })
+    //unwrap prom
+      .then(res => res.json())
+      .then(data => {
+        console.log('Server response:', data)
+        setGoals([...goals, data])//spread add-on data
+        setNewGoal({
+          name: '',
+          category: '',
+          savedAmount: '',
+          targetAmount: '',
+          deadline: ''
+        })
+      })
+      //catch error
+      .catch(err => console.error('Ooops! Error adding your goal:', err))
+    
+  }
+
+  //Display dATA-RENDER
   return (
     <div className="App">
       <h1>Smart Goals Planner</h1>
