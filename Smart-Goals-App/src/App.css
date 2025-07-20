@@ -105,3 +105,10 @@ button {
   color: black;
   border-radius: 5px;
 }
+#DepositBtn {
+  background-color: #db8383;
+  border-radius: 15px;
+  border: none;
+  margin: 0 1em;
+  margin-bottom: 0.5em;
+}

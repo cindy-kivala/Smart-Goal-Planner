@@ -3,8 +3,8 @@
     {
       "id": "1",
       "name": "Travel Fund - Japan",
-      "targetAmount": 5000,
-      "savedAmount": 3200,
+      "targetAmount": 6000,
+      "savedAmount": 3390,
       "category": "Personal",
       "deadline": "2025-12-31",
       "createdAt": "2024-01-15"
@@ -30,7 +30,7 @@
     {
       "id": "4",
       "name": "Down Payment - House",
-      "targetAmount": 50000,
+      "targetAmount": 52000,
       "savedAmount": 12000,
       "category": "Finance",
       "deadline": "2027-12-31",
@@ -99,11 +99,11 @@
       "deadline": "2025-07-28"
     },
     {
-      "id": 1752955850076,
+      "id": "1752955850076",
       "name": "Gym Membership",
       "category": "Health",
       "savedAmount": 400,
-      "targetAmount": 850,
+      "targetAmount": 900,
       "deadline": "2025-07-24"
     }
   ]

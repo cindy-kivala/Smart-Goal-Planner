@@ -35,6 +35,29 @@ function App() {
       })
       .catch(error => console.error('Error fetching goals:', error)) // Fetch goals from the JSON server
   }, [])
+
+  //deposits
+    function handleDeposit(id, amount) {
+    const goalToUpdate = goals.find((g) => g.id === id);
+    const updatedGoal = {
+      ...goalToUpdate,
+      savedAmount: goalToUpdate.savedAmount + amount
+    };
+
+
+    fetch(`http://localhost:3000/goals/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ savedAmount: updatedGoal.savedAmount })
+    })
+      .then((r) => r.json())
+      .then((updated) => {
+        const updatedList = goals.map((g) => (g.id === updated.id ? updated : g));
+        setGoals(updatedList);
+      });
+  }
+
+
   
   //Handle form submission
   const handleAddGoal =  async (event) => {
@@ -65,9 +88,6 @@ function App() {
     setEditGoalId(null);
   })
   .catch((error) => console.error('Error editing goal:', error));
-
-        setIsEditing(false);
-        setEditGoalId(null);
   } else {
        const newGoalWithId = {
       ...formattedGoal
@@ -173,6 +193,7 @@ function App() {
             goal={goal}
             onDelete={handleDeleteGoal}
             onEdit={handleEditClick}
+            onDeposit={handleDeposit}
           />
         ))}
       </ol>
