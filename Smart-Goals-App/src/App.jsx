@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Filter from './components/Filter'
 import NewGoalForm from './components/NewGoalForm'
 import GoalItem from './components/GoalItem'
+import { Link } from 'react-router-dom';
+import GoalOverview from './components/GoalOverview'
 
 function App() {
   //theme and toggle
@@ -164,12 +167,25 @@ function App() {
   //Display dATA-RENDER
 
     return (
+      <Router>
     <div className={isDarkMode ? 'App dark-mode' : 'App light-mode'}>
       <button onClick={toggleTheme} className="theme-toggle">
         {isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
      </button>
 
       <h1>Smart Goals Planner 🚀</h1>
+
+      <nav>
+        <a href="/" className="nav-link">🏠 Home</a>
+        <a href="/goal-overview" className="nav-link">📊 Overview</a>
+      </nav>
+
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
 
      {/*SEARCH BAR*/}
       <input
@@ -185,7 +201,11 @@ function App() {
          setNewGoal={setNewGoal} 
          handleAddGoal={handleAddGoal}
        />
-      <Filter selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+      <Filter 
+         selectedCategory={selectedCategory} 
+         onCategoryChange={handleCategoryChange} 
+      />
+
       <ol>
         {filteredGoals.map(goal => (
           <GoalItem
@@ -197,8 +217,20 @@ function App() {
           />
         ))}
       </ol>
+    </>
+    }
+  />
+ 
+   <Route
+          path="/goal-overview"
+          element={<GoalOverview goals={goals} />}
+        />
+      </Routes>
     </div>
-  )
+  </Router>
+)
+
+
 }
 
 export default App

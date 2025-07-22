@@ -4,7 +4,7 @@
       "id": "1",
       "name": "Travel Fund - Japan",
       "targetAmount": 6000,
-      "savedAmount": 3390,
+      "savedAmount": 3620,
       "category": "Personal",
       "deadline": "2025-12-31",
       "createdAt": "2024-01-15"
@@ -40,7 +40,7 @@
       "id": "5",
       "name": "Car Maintenance",
       "targetAmount": 800,
-      "savedAmount": 600,
+      "savedAmount": 650,
       "category": "Finance",
       "deadline": "2025-09-15",
       "createdAt": "2024-06-01"
@@ -67,7 +67,7 @@
       "id": "8",
       "name": "New Phone",
       "targetAmount": 1200,
-      "savedAmount": 0,
+      "savedAmount": 40,
       "category": "Misc.",
       "deadline": "2025-01-31",
       "createdAt": "2024-07-10"
@@ -97,14 +97,6 @@
       "savedAmount": 1200,
       "targetAmount": 2800,
       "deadline": "2025-07-28"
-    },
-    {
-      "id": "1752955850076",
-      "name": "Gym Membership",
-      "category": "Health",
-      "savedAmount": 400,
-      "targetAmount": 900,
-      "deadline": "2025-07-24"
     }
   ]
 }
